@@ -39,7 +39,7 @@ program abc
     end associate
 
     !trim
-    print *, len(trim("ab   ")) ! trim in Fortran only removes trailing blanks!!!
+    print *, len(trim(" ab ")) ! trim in Fortran only removes trailing blanks!!!
 
 
 
