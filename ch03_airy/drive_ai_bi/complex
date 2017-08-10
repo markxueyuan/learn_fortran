@@ -1,0 +1,29 @@
+    complex(wp), intent(in) :: z
+    integer, optional :: flags(3)
+    integer :: ierra, ierrb, ierrc
+    complex(wp) :: abi(4)
+    real(wp) :: half = 0.5_wp, three =3._wp
+    complex(wp) :: alpha, beta, gamma, bi1(2), bi2(2)
+    logical :: argument_switch, modify_switch
+
+    argument_switch = .false.
+    modify_switch = .false.
+   
+    call airy_ai(z, abi(1), abi(2), ierra, argument_switch, modify_switch)
+
+    beta = -cmplx(half,sqrt(three)*half,wp)
+    call airy_ai(z*beta, bi1(1), bi1(2), ierrb, argument_switch, modify_switch)
+    call airy_ai(z*conjg(beta), bi2(1), bi2(2), ierrc, argument_switch, modify_switch)
+    
+    alpha = cmplx(sqrt(three)*half,-half,wp)
+    gamma = -conjg(alpha)
+    abi(3) = alpha*bi1(1) + conjg(alpha)*bi2(1)
+    abi(4) = gamma*bi1(2) + conjg(gamma)*bi2(2)
+    IF (present(flags)) THEN
+       flags(1) = ierra
+       flags(2) = ierrb
+       flags(3) = ierrc
+       RETURN
+    END IF
+    
+    IF (ierra==0 .AND. ierrb==0 .AND. ierrc==0) RETURN

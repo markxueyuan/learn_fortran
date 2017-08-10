@@ -1,0 +1,18 @@
+real(wp), intent(in) :: x
+    integer, optional :: flags(2)
+    real(wp) :: abi(4)
+    integer :: ierra, ierrb
+    logical :: modify_switch
+
+    modify_switch = .false.
+
+    call airy_ai(x, abi(1), abi(2), ierra, modify_switch)
+    call airy_bi(x, abi(3), abi(4), ierrb, modify_switch)
+
+    if(present(flags)) then
+       flags(1) = ierra
+       flags(2) = ierrb
+       return
+    end if
+
+    if(ierra==0 .and. ierrb==0) return
