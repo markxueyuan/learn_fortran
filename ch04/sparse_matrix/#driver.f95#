@@ -3,7 +3,7 @@ program abc
   use set_precision, only: wp
   use sparseTypes, only: dpTriplet, dpTripletList
   use sparseAssign, only : assignment (=)
-  use sparseOperator, only: operator(.t), operator(+), operator(.p)
+  use sparseOperator, only: operator(.t.), operator(+), operator(.p.)
 
   type(dpTriplet) :: a, b, c, d, x
   type(dpTripletList) :: LIST
@@ -16,6 +16,8 @@ program abc
   List = a  
   List = [a, b, c, d]
   print *, List%rows, List%values
+
+  
 
   
 end program abc

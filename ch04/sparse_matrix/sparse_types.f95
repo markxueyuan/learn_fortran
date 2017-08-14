@@ -21,6 +21,19 @@ module sparseTypes
      real(wp), allocatable :: values(:)     
   end type dpTripletList
 
+  type dpHBSparseMatrix
+     integer :: noOfRows = 0
+     integer :: noOfColumns = 0
+     integer :: errFlag = 0
+     real(wp), allocatable :: values(:)
+     integer, allocatable :: rowIndices(:)
+     integer, allocatable :: colStart(:)
+
+  end type dpHBSparseMatrix
+  
+
+  
+
   contains
 ! ------------------------------
 

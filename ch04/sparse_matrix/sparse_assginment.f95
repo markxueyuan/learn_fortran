@@ -1,5 +1,6 @@
 module sparseAssign
-  use sparseTypes, only: dpTriplet, dpTripletList, getExpansionFactor
+  use sparseTypes, only: dpTriplet, dpTripletList, getExpansionFactor &
+       dpHBSparseMatrix
   use set_precision, only: wp
   
   interface assignment (=)
@@ -106,5 +107,37 @@ module sparseAssign
 
     call list_of_triplets(sparse, (/triplet/))
   end subroutine a_triplet
+  ! -------------------------------
+
+  subroutine list_of_triplets_eq_hb_matrix(triplets, hb_matrix)
+    implicit none
+    type(dpTriplet) , intent(inout), allocatable :: triplets(:)
+    type(dpHBSparseMatrix), intent(in) :: hb_matrix    
+    integer :: i, icount, istat, j, k, l, m, n
+    n = hb_matrix%noOfColumns
+    k = max(0, hb_matrix%colStart(n + 1) - 1)
+! allocate enough space k for the values
+    allocate(triplets(k), stat=istat)
+
+    if(istat /= 0) then
+       write(*, *) 'Allocation failure in assignment triplets(:) = hb_matrix'
+       return
+    end if
+
+    l = 0
+    icount = 0
+    
+    do j = 1, n
+!get the number of entries in column j
+       m = hb_matrix%colStart(j + 1) - hb_matrix%colStart(j)
+       do i = 1, m
+          l = l + 1
+          icount = icount + 1
+          triplets(l) = dpTriplet(hb_matrix%rowIndices(icount), j, hb_matrix%values(icount))
+       end do
+    end do    
+       
+  end subroutine list_of_triplets_eq_hb_matrix
+  
 
 end module
