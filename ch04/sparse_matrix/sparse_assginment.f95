@@ -10,6 +10,8 @@ module sparseAssign
      module procedure list_of_triplets
 ! type(dpTripletList) = integer(0)
      module procedure clear_triplets
+! type(dpTriplet(:)) = type(dpHBSparseMatrix)
+     module procedure list_of_triplets_eq_hb_matrix
   end interface assignment (=)
 
   contains
@@ -107,7 +109,7 @@ module sparseAssign
 
     call list_of_triplets(sparse, (/triplet/))
   end subroutine a_triplet
-  ! -------------------------------
+! -------------------------------
 
   subroutine list_of_triplets_eq_hb_matrix(triplets, hb_matrix)
     implicit none
@@ -138,6 +140,19 @@ module sparseAssign
     end do    
        
   end subroutine list_of_triplets_eq_hb_matrix
+
+  subroutine hb_matrix_eq_triplex_list(hb_matrix, triplet_list)
+    use sparseSort, only: sparseData
+    use sortElements, only: qsort
+
+    implicit none
+    type(dpHBSparseMatrix), intent(inout) :: hb_matrix
+    type(dpTripletList), intent(in), target :: triplet_list
+    type(sparseData) :: spData
+
+    "not finished yet"
+  end subroutine hb_matrix_eq_triplex_list
+  
   
 
 end module
